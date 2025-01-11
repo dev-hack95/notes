@@ -130,17 +130,26 @@
 
         ```mermaid
         flowchart LR
-            A[Client Request] -->|Sends Headers| B[HPACK Encoder]
-            B -->|Encodes Headers| C[Static Table]
-            B -->|Updates Dynamic Table| D[Dynamic Table]
-            C -->|References Static Headers| E[Compressed Header]
+            A[Client Request]:::client -->|Sends Headers| B[HPACK Encoder]:::encoder
+            B -->|Encodes Headers| C[Static Table]:::static
+            B -->|Updates Dynamic Table| D[Dynamic Table]:::dynamic
+            C -->|References Static Headers| E[Compressed Header]:::compressed
             D -->|Stores New Headers| E
-            E --> F[Send to Server]
+            E --> F[Send to Server]:::send
 
-            F -->|Receives Compressed Headers| G[HPACK Decoder]
-            G -->|Decodes Headers| H[Static Table]
-            G -->|Updates Dynamic Table| I[Dynamic Table]
-            H -->|Retrieves Static Headers| J[Decoded Header]
+            F -->|Receives Compressed Headers| G[HPACK Decoder]:::decoder
+            G -->|Decodes Headers| H[Static Table]:::static
+            G -->|Updates Dynamic Table| I[Dynamic Table]:::dynamic
+            H -->|Retrieves Static Headers| J[Decoded Header]:::decoded
             I -->|Retrieves Dynamic Headers| J
-            J --> K[Client Response]
+            J --> K[Client Response]:::response
+
+            classDef client fill:#f9f,stroke:#333,stroke-width:2px;
+            classDef encoder fill:#bbf,stroke:#333,stroke-width:2px;
+            classDef static fill:#afa,stroke:#333,stroke-width:2px;
+            classDef dynamic fill:#ffb,stroke:#333,stroke-width:2px;
+            classDef compressed fill:#ffc,stroke:#333,stroke-width:2px;
+            classDef send fill:#ff9,stroke:#333,stroke-width:2px;
+            classDef decoder fill:#fcb,stroke:#333,stroke-width:2px;
+            classDef response fill:#cfc,stroke:#333,stroke-width:2px;
         ```
