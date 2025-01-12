@@ -22,4 +22,27 @@
 
     2. **Compensation Transctions** : If steps failed, compensating transctions are executed to undo
        the effects of previous steps. i.e when `TASK_3` fails the C1 and C2 are executed and it will
-       revert all changes in database. 
+       revert all changes in database.
+
+
+    ```mermaid
+    sequenceDiagram
+        participant O as Order Service
+        participant P as Payment Service
+        participant S as Shipping Service
+
+        O->>P: Create Order
+        P-->>O: Order Created
+        O->>S: Reserve Shipping
+        S-->>O: Shipping Reserved
+        O->>P: Process Payment
+        alt Payment Successful
+            P-->>O: Payment Processed
+            O->>S: Ship Order
+            S-->>O: Order Shipped
+        else Payment Failed
+            P-->>O: Payment Failed
+            O->>S: Cancel Shipping
+            S-->>O: Shipping Canceled
+        end
+    ```
