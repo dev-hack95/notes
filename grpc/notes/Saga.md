@@ -46,3 +46,18 @@
             S-->>O: Shipping Canceled
         end
     ```
+
+  * **Options for Implementing Saga**
+
+    1. Orchestration-Based Approach
+
+       * Centralized control via an orchestrator that directs the flow of transctions.
+
+       * Easier to manage but introduces a single point of failure
+
+    2. Choregraphy-Based Approach
+
+       * Decentralized where each service responds to events.
+
+       * More resilient but harder to maanage comples workflows.
+
