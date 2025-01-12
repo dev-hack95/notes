@@ -21,4 +21,5 @@
        ```
 
     2. **Compensation Transctions** : If steps failed, compensating transctions are executed to undo
-       the effects of previous steps.
+       the effects of previous steps. i.e when `TASK_3` fails the C1 and C2 are executed and it will
+       revert all changes in database. 
