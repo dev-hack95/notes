@@ -1,0 +1,24 @@
+# `Saga`
+  * A sequence algorithum based on triggered ordered, `saga pattern` is crucial architectureal design in
+    microservices particularly for managing distributed transction across microservices. It allows the
+    co-ordination of multiple microservices to ensure data consistency across different services without
+    requiring tight coupling.
+
+  * **Working of the Saga Pattern**
+
+    1. **Local Tranction** : Each step in saga correspongs to the local transction with a microservice.
+       when one steps completes, it publishes event to trigger next step.
+
+       ```mermaid
+       flowchart LR
+           A@{ shape: stadium, label: "TASK_1"} --success--> B@{ shape: stadium, label: "TASK_2" }
+           B@{ shape: stadium, label: "TASK_2"} --success--> C@{ shape: stadium, label: "TASK_3" }
+           C@{ shape: stadium, label: "TASK_3"} --success--> D@{ shape: stadium, label: "TASK_4" }
+          
+           B --failure execute c1--> A
+           C --failure execute c2--> B
+           D --failure execute c3--> C
+       ```
+
+    2. **Compensation Transctions** : If steps failed, compensating transctions are executed to undo
+       the effects of previous steps.
