@@ -13,6 +13,8 @@
   }
   ```
 
+  * **NOTE** :  1, 2 and 3 are unique identifier
+
   * **FIELD RULE**
 
     * **singlar** : A structured message that can store only one value
@@ -39,3 +41,36 @@
 | **string**    | A UTF-8 encoded or 7-bit ASCII text string, cannot exceed \(2^{32}\) characters in length. |
 | **bytes**     | May contain any arbitrary sequence of bytes, cannot exceed \(2^{32}\) in length. |
 
+  * **FILED NUMBERS**
+
+    * Each field in a protocl buffers message gas a unique identifer know as field number, which is
+      crucial for identifying the field in the binary message format
+
+    * **Reserving Field Numbers**
+
+      * Each fiels has a unique identifier in the message to identify the field in the binary message
+        foramt.
+
+      * Field numbers are unique idetifer for the fields, those numbers shouldn't be changed for backward
+        compactibilty
+
+      ```bash
+      message User {     // initial message
+        string name = 1;
+        int32 age = 2;
+      }
+
+      // Addition of another varible to the User message
+      message User {
+        string name = 1;
+        int32 age = 2;
+        string email = 3; // added  new field name email
+      }
+
+      // Removal of a field
+      message User {
+        reserved 3; // reserving 3 to maintain the backward compactibility
+        string name = 1;
+        int32 age = 2;
+      }
+      ```        
