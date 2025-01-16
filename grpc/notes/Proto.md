@@ -74,3 +74,46 @@
         int32 age = 2;
       }
       ```        
+  * **Protocol Buffer Encoding**
+
+    * The main goal of protocol buffer encoding is to convert .proto file content into binary format
+      to send over a wire. The protocol buffer compiler used a set of rules to convert message into
+      binary format
+
+      * Example
+
+        ```bash
+        // .proto file
+        message ConsumerRequest {
+          int64 consumer_id = 1;
+        }
+
+        // .go file conversion
+        request := ConsumerRequest {
+          ConsumerId : 443
+        }
+        ```
+
+        * The request objext is marshalled by the protocl buffer into []byte to be able to sent
+          the data over wire
+
+        * These []byte contain the metadata and data itself.
+
+          * **Encoding**
+
+            * **Metadata Section**
+
+              * Size : 1byte(8bits)
+
+              * Purpose: Contains information about the data type and filed number.
+
+              * Structure:
+
+                 * First Three Bits(Wire Type)
+
+                    * These bits denote the wire type. For example `000` represnts Variant(type 0)
+
+                    * Remaining Five Bits:
+
+                       * These bits contain the field number or value
+
