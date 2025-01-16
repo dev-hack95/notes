@@ -154,3 +154,16 @@
     
              F --> K[Data Value: Remaining Bits]
           ```
+
+  * **Wire's Types**
+
+     * First three digits are the wire types and these types are used to encode the data
+
+| **Wire Type ID** | **Binary Notation** | **Name**          | **Used For**                                                                 |
+|------------------|---------------------|-------------------|------------------------------------------------------------------------------|
+| 0                | `000`               | Varint            | Encodes variable-length integers, including `int32`, `int64`, `uint32`, `uint64`, `sint32`, `sint64`, `bool`, and `enum`. This type is efficient for small integers. |
+| 1                | `001`               | Fixed64           | Used for fixed-length 64-bit values, such as `fixed64`, `sfixed64`, and `double`. This type is suitable when the exact size is known and fixed. |
+| 2                | `010`               | Length Delimited   | Encodes length-prefixed data, including `string`, `bytes`, embedded messages, and packed repeated fields. This allows for variable-length data to be efficiently serialized. |
+| 3                | `011`               | Start Group       | A deprecated wire type that was used to indicate the start of a group. It is not supported in current implementations. |
+| 4                | `100`               | End Group         | A deprecated wire type that was used to indicate the end of a group. It is not supported in current implementations. |
+| 5                | `101`               | Fixed32           | Used for fixed-length 32-bit values, such as `fixed32`, `sfixed32`, and `float`. This type is appropriate when the exact size is known and fixed. |
