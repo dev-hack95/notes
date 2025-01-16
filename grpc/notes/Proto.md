@@ -155,6 +155,51 @@
              F --> K[Data Value: Remaining Bits]
           ```
 
+
+  * **MSB**
+
+    * The concept of the Most Significant Bit (MSB) in the context of Protocol Buffers (protobuf)
+      encoding, particularly for variable-length integers (varints), is crucial for understanding
+      how data is serialized efficiently. Here’s a detailed breakdown of how the MSB is utilized
+      in encoding, especially when dealing with values greater than 127.
+
+    * Varint encoding is a method used by Protocol Buffers to serialize integers in a space-efficient
+      manner. The key features of varint encoding include:
+
+      * **Variable Length**: The number of bytes used to encode an integer can vary based on its size.
+      * **Base-128 Encoding**: Each byte can store 7 bits of data, with the 8th bit (the MSB) used as
+        a continuation flag.
+
+    * **Role of the Most Significant Bit (MSB)**
+
+      * **Continuation Indicator** :
+
+        * The MSB indicates whether more bytes follow the current byte in the encoded integer.
+        * If the MSB is 1, it signifies that there are additional bytes to come.
+        * If the MSB is 0, it indicates that this is the last byte of the encoded integer.
+
+      * **Encoding Process** :
+
+        * When encoding an integer, the number is split into 7-bit segments.
+        * Each segment is stored in a byte, with the MSB set according to whether more segments exist.
+
+
+      ```mermaid
+      graph TD;
+          A[Decimal Value: 21567] --> B[Binary Value: 101010000111111]
+          B --> C[Split into Seven-Bit Blocks]
+          C --> D[Block 1: 0000001]
+          C --> E[Block 2: 0101000]
+          C --> F[Block 3: 0111111]
+          D --> G[Add MSB: 1]
+          E --> H[Add MSB: 1]
+          F --> I[Add MSB: 0]
+          G --> J[Reverse Order]
+          H --> J
+          I --> J
+          J --> K[Final Order: 0111111, 0101000, 0000001]
+      ```
+
   * **Wire's Types**
 
      * First three digits are the wire types and these types are used to encode the data
