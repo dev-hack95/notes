@@ -142,7 +142,7 @@
 
           ```mermaid
           graph TD
-             A[Metadata Section] --> B[Wire Type: 000 (Varint)]
+             A[Metadata Section] --> B[Wire Type: 000 Varint]
              A --> C[Field Number: Binary Representation]
              B --> D[Type: int]
              C --> E[Remaining Bits for Field Value]
