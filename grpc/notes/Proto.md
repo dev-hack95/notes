@@ -117,3 +117,40 @@
 
                        * These bits contain the field number or value
 
+            * **Data Section**
+
+              * MSB(Most Significant Bit)
+
+                * The first bit indicates if there are additional bytes to follow
+
+                  * Value `0`: No additional bytes
+
+                  * Value `1`: More bytes follow
+
+              * Remaining Seven Bits
+
+                * These bits are used to encode acutal data.
+
+
+          ```bash
+          Metadata:
+          | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | (Field Number and Type)
+
+          Data:
+          | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 1 | (MSB + Data)
+          ```
+
+          ```mermaid
+          graph TD
+             A[Metadata Section] --> B[Wire Type: 000 (Varint)]
+             A --> C[Field Number: Binary Representation]
+             B --> D[Type: int]
+             C --> E[Remaining Bits for Field Value]
+    
+             F[Data Section] --> G[MSB: Continuation Bit]
+             G --> H{More Bytes?}
+             H -->|No| I[End of Data]
+             H -->|Yes| J[Additional Bytes Follow]
+    
+             F --> K[Data Value: Remaining Bits]
+          ```
