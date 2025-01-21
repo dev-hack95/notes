@@ -8,4 +8,4 @@
 
   * **Diagram**
 
-![Hexa Arch]("grpc/assets/HexaArch.png")
+    ![Hexa Arch](grpc/assets/HexaArch.png)
