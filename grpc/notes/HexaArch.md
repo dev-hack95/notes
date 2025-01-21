@@ -8,4 +8,4 @@
 
   * **Diagram**
 
-    * ![]("../assets/HexaArch.png")
+    ![]("grpc/assets/HexaArch.png")
