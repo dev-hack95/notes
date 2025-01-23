@@ -37,3 +37,32 @@
 
     * **Driven Adapter** : This `adapter` transform data from the application into a format
       suitable for external systems, such as database quaries or API calls
+
+# Load Balancing
+
+  * **Server-Side Load Balacing**
+
+    * In server-side load balancing a client will make RPC call to the load-balacer and
+      it will distribute the request among the available services
+
+
+      ```mermaid
+      stateDiagram-v2
+          state "Server-Side Load Balancing" as ServerLB {
+              [*] --> Client
+              Client --> LoadBalancer : RPC Request
+              LoadBalancer --> ServiceInstance1 : Distribute
+              LoadBalancer --> ServiceInstance2 : Distribute
+              LoadBalancer --> ServiceInstance3 : Distribute
+          }
+    
+          state "Client-Side Load Balancing" as ClientLB {
+              [*] --> Client
+              Client --> ServiceInstance1 : Direct RPC
+              Client --> ServiceInstance2 : Direct RPC
+              Client --> ServiceInstance3 : Direct RPC
+              ServiceInstance1 --> Client : Load Report
+              ServiceInstance2 --> Client : Load Report
+              ServiceInstance3 --> Client : Load Report
+          }
+      ```
