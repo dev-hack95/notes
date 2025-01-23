@@ -38,6 +38,108 @@
     * **Driven Adapter** : This `adapter` transform data from the application into a format
       suitable for external systems, such as database quaries or API calls
 
+# Structure
+
+  ## Project Folder Structure
+
+```
+project-root/
+│
+├── cmd/
+│   ├── server/
+│   │   └── main.go          # Server application entry point
+│   └── client/
+│       └── main.go          # Client application entry point
+│
+├── internal/
+│   ├── domain/               # Core business logic
+│   │   ├── models/
+│   │   │   └── user.go       # Domain models
+│   │   ├── services/
+│   │   │   └── user_service.go  # Service interfaces and implementations
+│   │   └── repositories/
+│   │       └── user_repository.go  # Repository interfaces
+│   │
+│   ├── adapters/             # External interface adapters
+│   │   ├── grpc/
+│   │   │   └── user_service_adapter.go  # gRPC service adapter
+│   │   ├── repository/
+│   │   │   ├── postgres_repository.go
+│   │   │   └── mongo_repository.go
+│   │   └── external/
+│   │       └── third_party_api_adapter.go
+│   │
+│   └── config/
+│       ├── config.go         # Configuration management
+│       └── environment.go    # Environment-specific configurations
+│
+├── pkg/
+│   ├── logger/
+│   │   └── logger.go         # Custom logging utilities
+│   └── middleware/
+│       └── interceptors.go   # gRPC interceptors
+│
+├── proto/                    # Protocol Buffer definitions
+│   ├── user_service.proto
+│   └── common.proto
+│
+├── migrations/               # Database migration scripts
+│   ├── 001_create_users.up.sql
+│   └── 001_create_users.down.sql
+│
+├── scripts/                  # Utility scripts
+│   ├── generate_protos.sh
+│   └── run_migrations.sh
+│
+├── deployments/              # Deployment configurations
+│   ├── docker-compose.yml
+│   └── Dockerfile
+│
+├── tests/                    # Test suites
+│   ├── integration/
+│   └── unit/
+│
+├── go.mod
+└── go.sum
+```
+
+### Folder Structure Explanation
+
+#### `cmd/`
+  - Entry points for server and client applications
+  - Minimal bootstrap code
+  - Dependency injection and initial setup
+
+#### `internal/`
+  - Private package containing core application logic
+  - Prevents external packages from importing implementation details
+
+#### `domain/`
+  - Pure business logic
+  - Contains models, service interfaces, and core abstractions
+  - No external dependencies
+
+#### `adapters/`
+  - Implement interfaces defined in domain
+  - Translate between external systems and core domain
+  - Support multiple implementations (e.g., different databases)
+
+#### `pkg/`
+  - Shared packages usable across the project
+  - Utility functions and cross-cutting concerns
+
+#### `proto/`
+  - Protocol Buffer service and message definitions
+  - Language-agnostic service contracts
+
+#### Additional Considerations
+  - Separation of concerns
+  - Dependency inversion principle
+  - Testability
+  - Flexibility for future changes
+
+
+
 # Load Balancing
 
   * **Server-Side Load Balacing**
@@ -184,3 +286,4 @@
             A -->|Continuous Learning| N[Performance Feedback Loop]
             N -->|Update Models| O[Service Intelligence Manager]
         ```
+
