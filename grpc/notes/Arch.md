@@ -147,3 +147,169 @@ graph TD
 
    * Hexagonal Architecture offers a robust approach to designing gRPC services, providing flexibility,
      testability, and clear separation of concerns.
+
+
+# Architectural Folder Structures in gRPC Applications
+
+## 1. Hexagonal Architecture Folder Structure
+```
+hexagonal-app/
+│
+├── cmd/
+│   ├── server/
+│   └── client/
+│
+├── internal/
+│   ├── domain/
+│   │   ├── models/
+│   │   ├── services/
+│   │   └── repositories/
+│   │
+│   ├── ports/
+│   │   ├── grpc/
+│   │   └── rest/
+│   │
+│   └── adapters/
+│       ├── repository/
+│       └── external/
+│
+├── pkg/
+│   ├── middleware/
+│   └── utils/
+│
+└── proto/
+```
+
+## 2. Layered Architecture Folder Structure
+```
+layered-app/
+│
+├── presentation/
+│   ├── grpc/
+│   │   └── controllers/
+│   └── rest/
+│       └── controllers/
+│
+├── service/
+│   ├── interfaces/
+│   └── implementations/
+│
+├── repository/
+│   ├── interfaces/
+│   └── implementations/
+│
+├── domain/
+│   ├── models/
+│   └── entities/
+│
+└── infrastructure/
+    ├── database/
+    └── config/
+```
+
+## 3. Clean Architecture Folder Structure
+```
+clean-arch-app/
+│
+├── cmd/
+│   ├── server/
+│   └── client/
+│
+├── pkg/
+│   ├── domain/
+│   │   ├── entities/
+│   │   └── interfaces/
+│   │
+│   ├── usecases/
+│   │   └── interactors/
+│   │
+│   └── interfaces/
+│       ├── repositories/
+│       └── services/
+│
+├── internal/
+│   ├── adapters/
+│   │   ├── repositories/
+│   │   ├── grpc/
+│   │   └── external/
+│   │
+│   └── infrastructure/
+│       ├── database/
+│       └── config/
+│
+└── proto/
+```
+
+## 4. Microservices Architecture Folder Structure
+```
+microservices-app/
+│
+├── services/
+│   ├── user-service/
+│   │   ├── cmd/
+│   │   ├── internal/
+│   │   └── proto/
+│   │
+│   ├── auth-service/
+│   │   ├── cmd/
+│   │   ├── internal/
+│   │   └── proto/
+│   │
+│   └── notification-service/
+│       ├── cmd/
+│       ├── internal/
+│       └── proto/
+│
+├── shared/
+│   ├── middleware/
+│   └── utils/
+│
+└── deployments/
+    ├── docker-compose.yml
+    └── k8s/
+```
+
+## 5. Event-Driven Architecture Folder Structure
+```
+event-driven-app/
+│
+├── cmd/
+│   ├── server/
+│   └── event-processor/
+│
+├── internal/
+│   ├── domain/
+│   │   ├── events/
+│   │   └── aggregates/
+│   │
+│   ├── services/
+│   │   └── event-handlers/
+│   │
+│   └── adapters/
+│       ├── event-store/
+│       └── message-brokers/
+│
+├── proto/
+│   ├── events.proto
+│   └── services.proto
+│
+└── deployments/
+    └── event-streaming/
+```
+
+## Comparative Analysis
+
+| Architecture | Complexity | Scalability | Flexibility | Best Use Case |
+|--------------|------------|-------------|-------------|---------------|
+| Hexagonal    | Medium     | Medium      | High        | Complex domains |
+| Layered      | Low        | Low         | Low         | Simple applications |
+| Clean        | High       | Medium      | High        | Enterprise apps |
+| Microservices| Very High  | Very High   | High        | Distributed systems |
+| Event-Driven | High       | High        | High        | Real-time systems |
+
+## Key Considerations
+  1. Choose architecture based on project complexity
+  2. Maintain clear separation of concerns
+  3. Design for testability and maintainability
+  4. Consider future scalability
+  5. Align with team expertise and project requirements
