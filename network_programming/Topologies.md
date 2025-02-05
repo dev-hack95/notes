@@ -19,4 +19,16 @@
 
       **Disadvantages**
 
-        * 
+        * **Scalability** : Limited to only two devices; not suitable for larger networks.
+        * **Reliability** : If link failed communication is entirely disrupted
+
+      **When to Use**
+
+        * Ideal for scenarios requiring direct communication b/w two devices, such as connection a computer to a printer or establishing a
+          dedicated WAN link b/w two sites.
+
+  ```mermaid
+  graph LR
+      A((Node 1)) ------ B((Node 2))
+  ```
+
