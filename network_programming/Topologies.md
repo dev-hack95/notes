@@ -29,6 +29,6 @@
 
   ```mermaid
   graph LR
-      A((Node 1)) ------ B((Node 2))
+    A((Node 1)) <------> B((Node 2))
   ```
 
