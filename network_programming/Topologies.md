@@ -32,3 +32,31 @@
     A((Node 1)) <------> B((Node 2))
   ```
 
+  * **Bus Topology**
+
+    * In bus topology, all devices share a single communication line known as the bus. Each deviece is connetced to this central cable,
+      which acts backbone of the network.
+
+    **Advantages**
+
+      * **Cost-Effective** : Requires less cabling than other topologies.
+      * **Easy Installation** : Simple to set up and extend by adding new devices.
+
+    **Disadvantages**
+
+      * **Single Point of failure** : If the main bus cable fails, the entire network goes down.
+      * **Troubleshotting Difficlties* : Identifying faults can be challing due to multiple connections on the bus.
+      
+
+    **When to use**
+
+      * Bus topologirs was commenly used in early ethernet networks in small office environments due to its low cost and simplicity
+
+      * Best suited fro small networks where budget constraints are significant and peformance demands are low
+
+  ```mermaid
+  graph LR
+      A[Main Cable] --- B((Device 1))
+      A --- C((Device 2))
+      A --- D((Device 3))
+  ```
