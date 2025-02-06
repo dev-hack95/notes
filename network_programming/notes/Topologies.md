@@ -45,7 +45,7 @@
     **Disadvantages**
 
       * **Single Point of failure** : If the main bus cable fails, the entire network goes down.
-      * **Troubleshotting Difficlties* : Identifying faults can be challing due to multiple connections on the bus.
+      * **Troubleshotting Difficlties** : Identifying faults can be challing due to multiple connections on the bus.
       
 
     **When to use**
@@ -59,4 +59,31 @@
       A[Main Cable] --- B((Device 1))
       A --- C((Device 2))
       A --- D((Device 3))
+  ```
+
+  * **Star Topology**
+
+    * Star topology feature a central hub or switch to which all nodes are connected. Data transmitted b/w nodes passes through this central device
+
+    **Advantages**
+
+      * **Easy Troubleshotting and Management** : Centralizses control makes it easy to identify faults.
+
+      * **Isolation of Devices** : Failure of one devicec does not affect others.
+
+    **Disadvantages**
+
+      * **Central Point of Failure** : If the hub fails, the entire network becomes inoperable
+
+      * **Higher cabling Costs** : Requires more cables than bus topology due to indicidual connections
+
+    **When to Use**
+
+      * Most modern networks use start topology due to its relability and ease of management. Ideal for medium to large networks
+
+  ```mermaid
+  graph TB
+      Hub((Hub/Switch)) --> A((Device 1))
+      Hub --> B((Device 2))
+      Hub --> C((Device 3))
   ```
