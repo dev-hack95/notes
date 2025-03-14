@@ -87,3 +87,22 @@
       Hub --> B((Device 2))
       Hub --> C((Device 3))
   ```
+
+  * **Ring Topology**
+
+    * In ring topology, each node connects to exactly two other nodes, forming a circular pathway for data transmission. Data travels around the ring
+      until it reaches its destination. It is a closed loop in which data travels in a single direction
+
+
+    **Advantages**
+
+      * **Predictable Performance** : Data packets travel in one direction, reducing collisions.
+
+      * **Equal Access for All Nodes** : Each node gets a chance to transmit data based on token passing.
+
+    **Disadvantages**
+
+      * **Single Point of Failure Risk**: If one node or connection fails, it can disrupt the entire network unless dual-ring configurations are used.
+
+      * **Difficult to Add/Remove Nodes**: Changes can disrupt the network operation.
+    
