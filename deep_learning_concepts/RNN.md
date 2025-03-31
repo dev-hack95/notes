@@ -46,4 +46,7 @@
        Ht+1 --> Ot+1((Output t+1))
        Ht+1 -.-> Ht+2((...))
     ```
+
+    
+    * $$H_t = \phi_h(X_t W_{xh} + H_{t-1} W_{hh} + b_h)$$
     
