@@ -47,6 +47,26 @@
        Ht+1 -.-> Ht+2((...))
     ```
 
+    *  **Hidden State and Input Representation**:
+
+       - The hidden state at time step \( t \) is denoted as \( H_t \in \mathbb{R}^{n \times h} \).
+       - The input at time step \( t \) is represented as \( X_t \in \mathbb{R}^{n \times d} \), where:
+       - \( n \): Number of samples.
+       - \( d \): Number of input features per sample.
+       - \( h \): Number of hidden units.
+
+    *  **Weight Matrices and Bias**:
+       - **Input-to-Hidden Weight Matrix (\( W_{xh} \))**: \( W_{xh} \in \mathbb{R}^{d \times h} \), transforms the input to the hidden layer.
+       - **Hidden-to-Hidden Weight Matrix (\( W_{hh} \))**: \( W_{hh} \in \mathbb{R}^{h \times h} \), connects the previous hidden state to the current one.
+       - **Bias Term (\( b_h \))**: \( b_h \in \mathbb{R}^{1 \times h} \), added to the computation for flexibility.
+
+    *  **Activation Function**:
+       - The non-linear activation function \( \phi_h \) prepares gradients for backpropagation.
+       - Common choices include:
+       - Logistic sigmoid function.
+       - Hyperbolic tangent (\( tanh \)).
+
+       * **Mathematical Formulation**
     
-    * $$H_t = \phi_h(X_t W_{xh} + H_{t-1} W_{hh} + b_h)$$
+         * $$H_t = \phi_h(X_t W_{xh} + H_{t-1} W_{hh} + b_h)$$
     
