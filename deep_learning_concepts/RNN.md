@@ -78,13 +78,13 @@
 
       * **Total Error**
 
-        * $$ L \left(O, Y\right) = \sum_{t=1}^{T} l_{t}(O_{t}, Y_{t})  $$
+        * $$L \left(O, Y\right) = \sum_{t=1}^{T} l_{t}(O_{t}, Y_{t})$$
 
-          * $$ O_{t} $$ ---> Output values
+          * $$O_{t}$$ ---> Output values
 
-          * $$ Y_{t} $$ ---> Target values
+          * $$Y_{t}$$ ---> Target values
 
-          * $$ l_{t} $$ ---> Losst term (i.e can be MSE, Hinge Loss, Entropy Loss ... etc)
+          * $$l_{t}$$ ---> Losst term (i.e can be MSE, Hinge Loss, Entropy Loss ... etc)
 
 
         * Its just a difference b/w target values and output values
