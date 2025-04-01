@@ -70,3 +70,24 @@
     
          * $$H_t = \phi_h(X_t W_{xh} + H_{t-1} W_{hh} + b_h)$$
     
+
+  * **BackPropogation**
+
+    * Backpropogation is technique to check how much each decision at previous moment contribute the
+      current error.
+
+      * **Total Error**
+
+        * $$ L \left(O, Y\right) = \sum_{t=1}^{T} l_{t}(O_{t}, Y_{t})  $$
+
+          * $$ O_{t} $$ ---> Output values
+
+          * $$ Y_{t} $$ ---> Target values
+
+          * $$ l_{t} $$ ---> Losst term (i.e can be MSE, Hinge Loss, Entropy Loss ... etc)
+
+
+        * Its just a difference b/w target values and output values
+
+    * Backpropogation and weight re-assignment is done by parial derivative with respect to random
+      weight initializarion at each step, feed forward network weights, final setp weights
