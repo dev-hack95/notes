@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LACP Working Mechanism Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .animation-container {
+            width: 100%;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            position: relative;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .device {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .actor {
+            left: 50px;
+            top: 50px;
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+        }
+        
+        .partner {
+            right: 50px;
+            top: 50px;
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+        }
+        
+        .port {
+            position: absolute;
+            width: 15px;
+            height: 30px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .actor-port1 { left: 170px; top: 40px; background: #FF6B6B; }
+        .actor-port2 { left: 170px; top: 80px; background: #FF6B6B; }
+        .actor-port3 { left: 170px; top: 120px; background: #FF6B6B; }
+        
+        .partner-port1 { right: 170px; top: 40px; background: #4ECDC4; }
+        .partner-port2 { right: 170px; top: 80px; background: #4ECDC4; }
+        .partner-port3 { right: 170px; top: 120px; background: #4ECDC4; }
+        
+        .link {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD93D, transparent);
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .link1 { top: 55px; left: 185px; right: 185px; }
+        .link2 { top: 95px; left: 185px; right: 185px; }
+        .link3 { top: 135px; left: 185px; right: 185px; }
+        
+        .lacpdu {
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(45deg, #FFD93D, #FFA726);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #333;
+            opacity: 0;
+            transition: all 0.5s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn.active {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+            transform: scale(1.05);
+        }
+        
+        .phase-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .phase-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #FFD93D;
+        }
+        
+        .phase-steps {
+            list-style: none;
+        }
+        
+        .phase-steps li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .phase-steps li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #FFD93D;
+            font-weight: bold;
+        }
+        
+        .status-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .status-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .status-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #4ECDC4;
+        }
+        
+        .active-port {
+            background: #00FF00 !important;
+            box-shadow: 0 0 15px #00FF00;
+        }
+        
+        .inactive-port {
+            background: #666 !important;
+            opacity: 0.5;
+        }
+        
+        .lag-formed {
+            border: 3px solid #00FF00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .monitoring {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes packetFlow {
+            0% { left: 185px; opacity: 0; }
+            10% { opacity: 1; }
+            50% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { right: 185px; opacity: 0; }
+        }
+        
+        .packet-animation {
+            animation: packetFlow 2s infinite;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LACP Working Mechanism Animation</h1>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(45deg, #FF6B6B, #FF8E53);"></div>
+                <span>LACP Actor (Client)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(45deg, #4ECDC4, #44A08D);"></div>
+                <span>LACP Partner (Switch)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFD93D;"></div>
+                <span>LACPDU Frames</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #00FF00;"></div>
+                <span>Active Ports</span>
+            </div>
+        </div>
+        
+        <div class="animation-container">
+            <div class="device actor">LACP Actor<br>(Client)</div>
+            <div class="device partner">LACP Partner<br>(Switch)</div>
+            
+            <div class="port actor-port1" data-port="1"></div>
+            <div class="port actor-port2" data-port="2"></div>
+            <div class="port actor-port3" data-port="3"></div>
+            
+            <div class="port partner-port1" data-port="1"></div>
+            <div class="port partner-port2" data-port="2"></div>
+            <div class="port partner-port3" data-port="3"></div>
+            
+            <div class="link link1"></div>
+            <div class="link link2"></div>
+            <div class="link link3"></div>
+            
+            <div class="lacpdu" id="lacpdu1">LACPDU</div>
+            <div class="lacpdu" id="lacpdu2">LACPDU</div>
+            <div class="lacpdu" id="lacpdu3">LACPDU</div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="startDiscovery()">Discovery Phase</button>
+            <button class="btn" onclick="startNegotiation()">Negotiation Phase</button>
+            <button class="btn" onclick="startMaintenance()">Maintenance Phase</button>
+            <button class="btn" onclick="simulateFailover()">Simulate Failover</button>
+            <button class="btn" onclick="resetAnimation()">Reset</button>
+        </div>
+        
+        <div id="phase-info" class="phase-info">
+            <div class="phase-title">LACP Protocol Overview</div>
+            <div class="phase-steps">
+                <li>LACP (Link Aggregation Control Protocol) enables automatic configuration of link aggregation</li>
+                <li>Uses IEEE 802.3 frames called LACPDUs (LACP Data Units)</li>
+                <li>Operates in three main phases: Discovery, Negotiation, and Maintenance</li>
+                <li>Provides dynamic load balancing and automatic failover capabilities</li>
+            </div>
+        </div>
+        
+        <div class="status-panel">
+            <div class="status-card">
+                <div class="status-title">System Information Exchange</div>
+                <div id="system-info">
+                    <strong>Actor System:</strong><br>
+                    MAC: 00:1B:21:12:34:56<br>
+                    Priority: 32768<br>
+                    Key: 100<br><br>
+                    <strong>Partner System:</strong><br>
+                    MAC: 00:1B:21:78:9A:BC<br>
+                    Priority: 32768<br>
+                    Key: 100
+                </div>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-title">Port Status</div>
+                <div id="port-status">
+                    <strong>Port 1:</strong> Standby<br>
+                    <strong>Port 2:</strong> Standby<br>
+                    <strong>Port 3:</strong> Standby<br><br>
+                    <strong>LAG Status:</strong> Not Formed
+                </div>
+            </div>
+            
+            <div class="status-card">
+                <div class="status-title">Current Phase</div>
+                <div id="current-phase">
+                    <strong>Phase:</strong> Idle<br>
+                    <strong>Active Ports:</strong> 0<br>
+                    <strong>Bandwidth:</strong> 0 Gbps<br>
+                    <strong>Redundancy:</strong> None
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhase = 'idle';
+        let activeAnimation = null;
+        
+        function updatePhaseInfo(phase, title, steps) {
+            const phaseInfo = document.getElementById('phase-info');
+            phaseInfo.innerHTML = `
+                <div class="phase-title">${title}</div>
+                <ul class="phase-steps">
+                    ${steps.map(step => `<li>${step}</li>`).join('')}
+                </ul>
+            `;
+        }
+        
+        function updateStatus(phase, ports, bandwidth, redundancy) {
+            document.getElementById('current-phase').innerHTML = `
+                <strong>Phase:</strong> ${phase}<br>
+                <strong>Active Ports:</strong> ${ports}<br>
+                <strong>Bandwidth:</strong> ${bandwidth}<br>
+                <strong>Redundancy:</strong> ${redundancy}
+            `;
+        }
+        
+        function updatePortStatus(status) {
+            document.getElementById('port-status').innerHTML = status;
+        }
+        
+        function resetAnimation() {
+            if (activeAnimation) clearInterval(activeAnimation);
+            
+            // Reset all visual elements
+            document.querySelectorAll('.port').forEach(port => {
+                port.classList.remove('active-port', 'inactive-port');
+            });
+            
+            document.querySelectorAll('.link').forEach(link => {
+                link.style.opacity = '0';
+                link.classList.remove('monitoring');
+            });
+            
+            document.querySelectorAll('.lacpdu').forEach(lacpdu => {
+                lacpdu.style.opacity = '0';
+                lacpdu.classList.remove('packet-animation');
+            });
+            
+            document.querySelectorAll('.device').forEach(device => {
+                device.classList.remove('lag-formed');
+            });
+            
+            // Reset button states
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            currentPhase = 'idle';
+            updatePhaseInfo('idle', 'LACP Protocol Overview', [
+                'LACP (Link Aggregation Control Protocol) enables automatic configuration of link aggregation',
+                'Uses IEEE 802.3 frames called LACPDUs (LACP Data Units)',
+                'Operates in three main phases: Discovery, Negotiation, and Maintenance',
+                'Provides dynamic load balancing and automatic failover capabilities'
+            ]);
+            
+            updateStatus('Idle', '0', '0 Gbps', 'None');
+            updatePortStatus('<strong>Port 1:</strong> Standby<br><strong>Port 2:</strong> Standby<br><strong>Port 3:</strong> Standby<br><br><strong>LAG Status:</strong> Not Formed');
+        }
+        
+        function startDiscovery() {
+            resetAnimation();
+            event.target.classList.add('active');
+            currentPhase = 'discovery';
+            
+            updatePhaseInfo('discovery', 'Step 1: Discovery Phase', [
+                'LACP actor (client) sends LACPDUs on all potential aggregation ports',
+                'Partner (switch/server) receives and analyzes the frames',
+                'Both devices exchange system information: MAC address, priority, port key',
+                'Ports are identified as potential aggregation candidates'
+            ]);
+            
+            updateStatus('Discovery', '0', '0 Gbps', 'None');
+            
+            let step = 0;
+            activeAnimation = setInterval(() => {
+                switch(step) {
+                    case 0:
+                        // Show links
+                        document.querySelectorAll('.link').forEach(link => {
+                            link.style.opacity = '0.3';
+                        });
+                        updatePortStatus('<strong>Port 1:</strong> Discovering<br><strong>Port 2:</strong> Discovering<br><strong>Port 3:</strong> Discovering<br><br><strong>LAG Status:</strong> Discovery');
+                        break;
+                    case 1:
+                        // Send LACPDUs from actor
+                        sendLACPDU('lacpdu1', 185, 400, 'link1');
+                        break;
+                    case 2:
+                        sendLACPDU('lacpdu2', 185, 400, 'link2');
+                        break;
+                    case 3:
+                        sendLACPDU('lacpdu3', 185, 400, 'link3');
+                        break;
+                    case 4:
+                        // Send response LACPDUs from partner
+                        sendLACPDU('lacpdu1', 400, 185, 'link1');
+                        break;
+                    case 5:
+                        sendLACPDU('lacpdu2', 400, 185, 'link2');
+                        break;
+                    case 6:
+                        sendLACPDU('lacpdu3', 400, 185, 'link3');
+                        updatePortStatus('<strong>Port 1:</strong> Information Exchange<br><strong>Port 2:</strong> Information Exchange<br><strong>Port 3:</strong> Information Exchange<br><br><strong>LAG Status:</strong> Exchanging Info');
+                        break;
+                    case 7:
+                        step = 0; // Loop the discovery process
+                        break;
+                }
+                step++;
+            }, 800);
+        }
+        
+        function startNegotiation() {
+            resetAnimation();
+            event.target.classList.add('active');
+            currentPhase = 'negotiation';
+            
+            updatePhaseInfo('negotiation', 'Step 2: Negotiation Phase', [
+                'Devices compare received information with local configuration',
+                'Ports with matching parameters are identified as aggregatable',
+                'Link Aggregation Group (LAG) is formed dynamically',
+                'Active links are selected based on priority and availability'
+            ]);
+            
+            let step = 0;
+            activeAnimation = setInterval(() => {
+                switch(step) {
+                    case 0:
+                        // Show parameter comparison
+                        document.querySelectorAll('.link').forEach(link => {
+                            link.style.opacity = '0.3';
+                        });
+                        updateStatus('Negotiation', '0', '0 Gbps', 'None');
+                        updatePortStatus('<strong>Port 1:</strong> Comparing Parameters<br><strong>Port 2:</strong> Comparing Parameters<br><strong>Port 3:</strong> Comparing Parameters<br><br><strong>LAG Status:</strong> Negotiating');
+                        break;
+                    case 1:
+                        // Port 1 matches - activate
+                        document.querySelector('.actor-port1').classList.add('active-port');
+                        document.querySelector('.partner-port1').classList.add('active-port');
+                        document.querySelector('.link1').style.opacity = '1';
+                        updatePortStatus('<strong>Port 1:</strong> ✓ Aggregatable<br><strong>Port 2:</strong> Comparing Parameters<br><strong>Port 3:</strong> Comparing Parameters<br><br><strong>LAG Status:</strong> Partial Formation');
+                        break;
+                    case 2:
+                        // Port 2 matches - activate
+                        document.querySelector('.actor-port2').classList.add('active-port');
+                        document.querySelector('.partner-port2').classList.add('active-port');
+                        document.querySelector('.link2').style.opacity = '1';
+                        updatePortStatus('<strong>Port 1:</strong> ✓ Active<br><strong>Port 2:</strong> ✓ Aggregatable<br><strong>Port 3:</strong> Comparing Parameters<br><br><strong>LAG Status:</strong> Growing');
+                        break;
+                    case 3:
+                        // Port 3 doesn't match - deactivate
+                        document.querySelector('.actor-port3').classList.add('inactive-port');
+                        document.querySelector('.partner-port3').classList.add('inactive-port');
+                        document.querySelector('.link3').style.opacity = '0.1';
+                        updatePortStatus('<strong>Port 1:</strong> ✓ Active<br><strong>Port 2:</strong> ✓ Active<br><strong>Port 3:</strong> ✗ Incompatible<br><br><strong>LAG Status:</strong> Formed (2 ports)');
+                        break;
+                    case 4:
+                        // LAG formation complete
+                        document.querySelectorAll('.device').forEach(device => {
+                            device.classList.add('lag-formed');
+                        });
+                        updateStatus('Negotiated', '2', '2 Gbps', 'Active-Active');
+                        clearInterval(activeAnimation);
+                        break;
+                }
+                step++;
+            }, 1500);
+        }
+        
+        function startMaintenance() {
+            resetAnimation();
+            event.target.classList.add('active');
+            currentPhase = 'maintenance';
+            
+            // Set up LAG first
+            document.querySelector('.actor-port1').classList.add('active-port');
+            document.querySelector('.partner-port1').classList.add('active-port');
+            document.querySelector('.actor-port2').classList.add('active-port');
+            document.querySelector('.partner-port2').classList.add('active-port');
+            document.querySelector('.actor-port3').classList.add('inactive-port');
+            document.querySelector('.partner-port3').classList.add('inactive-port');
+            document.querySelector('.link1').style.opacity = '1';
+            document.querySelector('.link2').style.opacity = '1';
+            document.querySelector('.link3').style.opacity = '0.1';
+            document.querySelectorAll('.device').forEach(device => {
+                device.classList.add('lag-formed');
+            });
+            
+            updatePhaseInfo('maintenance', 'Step 3: Maintenance Phase', [
+                'Continuous monitoring through periodic LACPDUs (every second)',
+                'Automatic failover when links become unavailable',
+                'Dynamic addition/removal of links as they become available/unavailable',
+                'Load balancing algorithm adjustments based on link status'
+            ]);
+            
+            updateStatus('Maintenance', '2', '2 Gbps', 'Active-Active');
+            updatePortStatus('<strong>Port 1:</strong> ✓ Active (Monitoring)<br><strong>Port 2:</strong> ✓ Active (Monitoring)<br><strong>Port 3:</strong> ✗ Standby<br><br><strong>LAG Status:</strong> Operational');
+            
+            // Start continuous monitoring
+            document.querySelectorAll('.link').forEach(link => {
+                if (link.style.opacity === '1') {
+                    link.classList.add('monitoring');
+                }
+            });
+            
+            activeAnimation = setInterval(() => {
+                // Send periodic LACPDUs for monitoring
+                if (Math.random() > 0.5) {
+                    sendLACPDU('lacpdu1', 185, 400, 'link1');
+                } else {
+                    sendLACPDU('lacpdu2', 185, 400, 'link2');
+                }
+            }, 1000);
+        }
+        
+        function simulateFailover() {
+            if (currentPhase !== 'maintenance') {
+                startMaintenance();
+                setTimeout(simulateFailover, 2000);
+                return;
+            }
+            
+            updatePhaseInfo('failover', 'Failover Simulation', [
+                'Port 1 connection lost - immediate detection',
+                'Traffic automatically redistributed to remaining active ports',
+                'LACP continues monitoring for port recovery',
+                'Port 1 recovered - automatically added back to LAG'
+            ]);
+            
+            let step = 0;
+            const failoverInterval = setInterval(() => {
+                switch(step) {
+                    case 0:
+                        // Simulate Port 1 failure
+                        document.querySelector('.actor-port1').classList.remove('active-port');
+                        document.querySelector('.partner-port1').classList.remove('active-port');
+                        document.querySelector('.actor-port1').classList.add('inactive-port');
+                        document.querySelector('.partner-port1').classList.add('inactive-port');
+                        document.querySelector('.link1').style.opacity = '0.1';
+                        document.querySelector('.link1').classList.remove('monitoring');
+                        updateStatus('Failover', '1', '1 Gbps', 'Degraded');
+                        updatePortStatus('<strong>Port 1:</strong> ✗ Failed<br><strong>Port 2:</strong> ✓ Active (All traffic)<br><strong>Port 3:</strong> ✗ Standby<br><br><strong>LAG Status:</strong> Degraded Mode');
+                        break;
+                    case 1:
+                        // Port 3 comes online to help
+                        document.querySelector('.actor-port3').classList.remove('inactive-port');
+                        document.querySelector('.partner-port3').classList.remove('inactive-port');
+                        document.querySelector('.actor-port3').classList.add('active-port');
+                        document.querySelector('.partner-port3').classList.add('active-port');
+                        document.querySelector('.link3').style.opacity = '1';
+                        document.querySelector('.link3').classList.add('monitoring');
+                        updateStatus('Recovery', '2', '2 Gbps', 'Active-Active');
+                        updatePortStatus('<strong>Port 1:</strong> ✗ Failed<br><strong>Port 2:</strong> ✓ Active<br><strong>Port 3:</strong> ✓ Active (Backup activated)<br><br><strong>LAG Status:</strong> Restored');
+                        break;
+                    case 2:
+                        // Port 1 recovers
+                        document.querySelector('.actor-port1').classList.remove('inactive-port');
+                        document.querySelector('.partner-port1').classList.remove('inactive-port');
+                        document.querySelector('.actor-port1').classList.add('active-port');
+                        document.querySelector('.partner-port1').classList.add('active-port');
+                        document.querySelector('.link1').style.opacity = '1';
+                        document.querySelector('.link1').classList.add('monitoring');
+                        updateStatus('Full Recovery', '3', '3 Gbps', 'Triple Redundancy');
+                        updatePortStatus('<strong>Port 1:</strong> ✓ Active (Recovered)<br><strong>Port 2:</strong> ✓ Active<br><strong>Port 3:</strong> ✓ Active<br><br><strong>LAG Status:</strong> Full Capacity');
+                        break;
+                    case 3:
+                        clearInterval(failoverInterval);
+                        break;
+                }
+                step++;
+            }, 2000);
+        }
+        
+        function sendLACPDU(lacpduId, startX, endX, linkClass) {
+            const lacpdu = document.getElementById(lacpduId);
+            const linkElement = document.querySelector('.' + linkClass);
+            
+            lacpdu.style.left = startX + 'px';
+            lacpdu.style.top = linkElement.style.top || (linkElement.classList.contains('link1') ? '55px' : linkElement.classList.contains('link2') ? '95px' : '135px');
+            lacpdu.style.opacity = '1';
+            
+            // Animate movement
+            let currentX = startX;
+            const direction = startX < endX ? 1 : -1;
+            const speed = 3;
+            
+            const moveInterval = setInterval(() => {
+                currentX += direction * speed;
+                lacpdu.style.left = currentX + 'px';
+                
+                if ((direction === 1 && currentX >= endX) || (direction === -1 && currentX <= endX)) {
+                    lacpdu.style.opacity = '0';
+                    clearInterval(moveInterval);
+                }
+            }, 20);
+        }
+        
+        // Initialize
+        resetAnimation();
+    </script>
+</body>
+</html>

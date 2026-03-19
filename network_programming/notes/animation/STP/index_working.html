@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanning Tree Protocol Animation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .network-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .switch {
+            position: absolute;
+            width: 80px;
+            height: 60px;
+            background: #4CAF50;
+            border: 3px solid #fff;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .switch.root {
+            background: #FF9800;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,152,0,0.6);
+        }
+        
+        .switch-id {
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        
+        .link {
+            position: absolute;
+            height: 4px;
+            background: #2196F3;
+            border-radius: 2px;
+            transition: all 0.5s ease;
+            transform-origin: left center;
+        }
+        
+        .link.blocked {
+            background: #f44336;
+            animation: pulse 2s infinite;
+        }
+        
+        .link.forwarding {
+            background: #4CAF50;
+        }
+        
+        .link.root-path {
+            background: #FF9800;
+            height: 6px;
+            box-shadow: 0 0 10px rgba(255,152,0,0.6);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 0 10px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 8px;
+        }
+        
+        .cost-display {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .cost-display.visible {
+            opacity: 1;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px currentColor; }
+            50% { box-shadow: 0 0 20px currentColor; }
+        }
+        
+        .switch.calculating {
+            animation: glow 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Spanning Tree Protocol Animation</h1>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>Switch (Normal)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF9800;"></div>
+                <span>Root Bridge</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50; height: 4px;"></div>
+                <span>Forwarding Link</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f44336; height: 4px;"></div>
+                <span>Blocked Link</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF9800; height: 6px;"></div>
+                <span>Root Path</span>
+            </div>
+        </div>
+        
+        <div class="network-container" id="networkContainer">
+            <!-- Switches -->
+            <div class="switch" id="sw1" style="left: 150px; top: 100px;">
+                SW1
+                <div class="switch-id">ID: 100</div>
+            </div>
+            <div class="switch" id="sw2" style="left: 450px; top: 100px;">
+                SW2
+                <div class="switch-id">ID: 200</div>
+            </div>
+            <div class="switch" id="sw3" style="left: 750px; top: 100px;">
+                SW3
+                <div class="switch-id">ID: 50</div>
+            </div>
+            <div class="switch" id="sw4" style="left: 300px; top: 300px;">
+                SW4
+                <div class="switch-id">ID: 150</div>
+            </div>
+            <div class="switch" id="sw5" style="left: 600px; top: 300px;">
+                SW5
+                <div class="switch-id">ID: 250</div>
+            </div>
+            
+            <!-- Links -->
+            <div class="link" id="link12"></div>
+            <div class="link" id="link23"></div>
+            <div class="link" id="link14"></div>
+            <div class="link" id="link24"></div>
+            <div class="link" id="link25"></div>
+            <div class="link" id="link35"></div>
+            <div class="link" id="link45"></div>
+            
+            <!-- Cost displays -->
+            <div class="cost-display" id="cost12">Cost: 10</div>
+            <div class="cost-display" id="cost23">Cost: 10</div>
+            <div class="cost-display" id="cost14">Cost: 15</div>
+            <div class="cost-display" id="cost24">Cost: 20</div>
+            <div class="cost-display" id="cost25">Cost: 10</div>
+            <div class="cost-display" id="cost35">Cost: 15</div>
+            <div class="cost-display" id="cost45">Cost: 25</div>
+        </div>
+        
+        <div class="status" id="status">
+            Welcome! Click "Start STP Process" to see how Spanning Tree Protocol works.
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="startBtn" onclick="startSTP()">Start STP Process</button>
+            <button class="btn" id="resetBtn" onclick="resetAnimation()">Reset</button>
+            <button class="btn" id="nextBtn" onclick="nextStep()" disabled>Next Step</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let animationRunning = false;
+        
+        // Network topology with costs
+        const links = [
+            {id: 'link12', from: 'sw1', to: 'sw2', cost: 10},
+            {id: 'link23', from: 'sw2', to: 'sw3', cost: 10},
+            {id: 'link14', from: 'sw1', to: 'sw4', cost: 15},
+            {id: 'link24', from: 'sw2', to: 'sw4', cost: 20},
+            {id: 'link25', from: 'sw2', to: 'sw5', cost: 10},
+            {id: 'link35', from: 'sw3', to: 'sw5', cost: 15},
+            {id: 'link45', from: 'sw4', to: 'sw5', cost: 25}
+        ];
+        
+        const switches = [
+            {id: 'sw1', priority: 100, x: 150, y: 100},
+            {id: 'sw2', priority: 200, x: 450, y: 100},
+            {id: 'sw3', priority: 50, x: 750, y: 100},  // Will be root (lowest priority)
+            {id: 'sw4', priority: 150, x: 300, y: 300},
+            {id: 'sw5', priority: 250, x: 600, y: 300}
+        ];
+        
+        function initializeNetwork() {
+            // Position and draw all links
+            links.forEach(link => {
+                const fromSwitch = switches.find(s => s.id === link.from);
+                const toSwitch = switches.find(s => s.id === link.to);
+                
+                const linkElement = document.getElementById(link.id);
+                const costElement = document.getElementById('cost' + link.id.slice(4));
+                
+                const dx = toSwitch.x - fromSwitch.x + 40; // +40 for switch center offset
+                const dy = toSwitch.y - fromSwitch.y + 30; // +30 for switch center offset
+                const length = Math.sqrt(dx*dx + dy*dy);
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                linkElement.style.left = (fromSwitch.x + 40) + 'px';
+                linkElement.style.top = (fromSwitch.y + 30) + 'px';
+                linkElement.style.width = length + 'px';
+                linkElement.style.transform = `rotate(${angle}deg)`;
+                
+                // Position cost display at link midpoint
+                costElement.style.left = (fromSwitch.x + 40 + dx/2) + 'px';
+                costElement.style.top = (fromSwitch.y + 30 + dy/2) + 'px';
+            });
+        }
+        
+        const steps = [
+            {
+                title: "Step 1: Initial Network State",
+                description: "All switches start in an unknown state. Every switch thinks it might be the root bridge.",
+                action: () => {
+                    // Reset all switches to normal state
+                    switches.forEach(sw => {
+                        document.getElementById(sw.id).classList.remove('root', 'calculating');
+                    });
+                    // All links start as forwarding (blue)
+                    links.forEach(link => {
+                        const linkEl = document.getElementById(link.id);
+                        linkEl.classList.remove('blocked', 'root-path');
+                        linkEl.classList.add('forwarding');
+                    });
+                    showCosts();
+                }
+            },
+            {
+                title: "Step 2: Root Bridge Election",
+                description: "Switches exchange Bridge Protocol Data Units (BPDUs). SW3 has the lowest Bridge ID (50), so it becomes the Root Bridge.",
+                action: () => {
+                    // Highlight switches as they calculate
+                    switches.forEach(sw => {
+                        document.getElementById(sw.id).classList.add('calculating');
+                    });
+                    
+                    setTimeout(() => {
+                        switches.forEach(sw => {
+                            document.getElementById(sw.id).classList.remove('calculating');
+                        });
+                        // SW3 becomes root
+                        document.getElementById('sw3').classList.add('root');
+                    }, 2000);
+                }
+            },
+            {
+                title: "Step 3: Calculate Root Path Costs",
+                description: "Each switch calculates the lowest cost path to reach the Root Bridge (SW3). These become the Root Ports.",
+                action: () => {
+                    // Show path costs calculation
+                    setTimeout(() => {
+                        // Highlight best paths to root
+                        document.getElementById('link23').classList.add('root-path');
+                        document.getElementById('link25').classList.add('root-path');
+                        document.getElementById('link35').classList.add('root-path');
+                        
+                        // SW1's best path: SW1->SW2->SW3 (cost 20)
+                        document.getElementById('link12').classList.add('root-path');
+                        
+                        // SW4's best path: SW4->SW2->SW3 (cost 30) vs SW4->SW1->SW2->SW3 (cost 45)
+                        // So SW4 chooses SW4->SW2->SW3
+                        document.getElementById('link24').classList.add('root-path');
+                    }, 1000);
+                }
+            },
+            {
+                title: "Step 4: Identify Redundant Links",
+                description: "Links that would create loops are identified. These will be blocked to prevent broadcast storms.",
+                action: () => {
+                    // Block redundant links
+                    setTimeout(() => {
+                        // SW1-SW4 link is blocked (redundant path)
+                        document.getElementById('link14').classList.remove('forwarding', 'root-path');
+                        document.getElementById('link14').classList.add('blocked');
+                        
+                        // SW4-SW5 link is blocked (redundant path)
+                        document.getElementById('link45').classList.remove('forwarding', 'root-path');
+                        document.getElementById('link45').classList.add('blocked');
+                    }, 1000);
+                }
+            },
+            {
+                title: "Step 5: Final Spanning Tree",
+                description: "STP is complete! A loop-free logical topology is established while maintaining redundant physical links for failover.",
+                action: () => {
+                    hideCosts();
+                    // Highlight the final spanning tree
+                    setTimeout(() => {
+                        const finalTree = ['link12', 'link23', 'link24', 'link25', 'link35'];
+                        finalTree.forEach(linkId => {
+                            if (document.getElementById(linkId).classList.contains('root-path')) {
+                                // Keep root-path styling
+                                return;
+                            }
+                            document.getElementById(linkId).classList.remove('forwarding');
+                            document.getElementById(linkId).classList.add('forwarding');
+                        });
+                    }, 500);
+                }
+            }
+        ];
+        
+        function showCosts() {
+            document.querySelectorAll('.cost-display').forEach(el => {
+                el.classList.add('visible');
+            });
+        }
+        
+        function hideCosts() {
+            document.querySelectorAll('.cost-display').forEach(el => {
+                el.classList.remove('visible');
+            });
+        }
+        
+        function startSTP() {
+            if (animationRunning) return;
+            
+            animationRunning = true;
+            currentStep = 0;
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('nextBtn').disabled = false;
+            
+            executeStep();
+        }
+        
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                executeStep();
+            } else {
+                // Animation complete
+                document.getElementById('nextBtn').disabled = true;
+                updateStatus("Animation complete! Click 'Reset' to run again.");
+            }
+        }
+        
+        function executeStep() {
+            const step = steps[currentStep];
+            updateStatus(step.description);
+            step.action();
+            
+            if (currentStep === steps.length - 1) {
+                document.getElementById('nextBtn').textContent = "Complete";
+            }
+        }
+        
+        function resetAnimation() {
+            animationRunning = false;
+            currentStep = 0;
+            
+            // Reset all switches
+            switches.forEach(sw => {
+                const element = document.getElementById(sw.id);
+                element.classList.remove('root', 'calculating');
+            });
+            
+            // Reset all links
+            links.forEach(link => {
+                const linkEl = document.getElementById(link.id);
+                linkEl.classList.remove('blocked', 'root-path');
+                linkEl.classList.add('forwarding');
+            });
+            
+            hideCosts();
+            
+            // Reset buttons
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('nextBtn').textContent = "Next Step";
+            
+            updateStatus("Network reset. Click 'Start STP Process' to begin the animation.");
+        }
+        
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        // Initialize the network on page load
+        window.onload = function() {
+            initializeNetwork();
+            resetAnimation();
+        };
+    </script>
+</body>
+</html>
