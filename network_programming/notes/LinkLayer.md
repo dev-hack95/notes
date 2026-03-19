@@ -23,9 +23,9 @@ wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
   but not recommeded to use beacuse of compatibility issues.
 
 
-![Link Layer 2](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_2.jpg)
+![Link Layer 2](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_2.jpg)
 
-![Link Layer 3](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_3.jpg)
+![Link Layer 3](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_3.jpg)
 
 ## IEEE 802 LAN/MAN  Standards
 
@@ -74,17 +74,17 @@ wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 * The Ethernet frame format is the standardized structure that defines how data is packaged
   and transmitted over Ethernet networks
 
-![Link Layer 4](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_4.jpg)
+![Link Layer 4](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_4.jpg)
 
 ## MPE (Manchester Phase Encoding)
 
-![Link Layer 5](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_5.jpg)
+![Link Layer 5](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_5.jpg)
 
-![Link Layer 6](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_6.jpg)
+![Link Layer 6](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_6.jpg)
 
 ## IEEE Packet
 
-![Link Layer 7](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_7.jpg)
+![Link Layer 7](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_7.jpg)
 
 ---
 
@@ -495,29 +495,29 @@ graph TD
 
 ## VLAN
 
-![Link Layer 8](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_8.jpg)
+![Link Layer 8](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_8.jpg)
 
-![Link Layer 9](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_9.jpg)
+![Link Layer 9](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_9.jpg)
 
-![Link Layer 10](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_10.jpg)
+![Link Layer 10](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_10.jpg)
 
-![Link Layer 11](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_11.jpg)
+![Link Layer 11](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_11.jpg)
 
-![Link Layer 12](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_12.jpg)
+![Link Layer 12](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_12.jpg)
 
 # Link Aggrigation (802.1AX)
 
-![Link Layer 13](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_13.jpg)
+![Link Layer 13](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_13.jpg)
 
-![Link Layer 14](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_14.jpg)
+![Link Layer 14](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_14.jpg)
 
-![Link Layer 15](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_15.jpg)
+![Link Layer 15](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_15.jpg)
 
-![Link Layer 16](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_16.jpg)
+![Link Layer 16](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_16.jpg)
 
-![Link Layer 17](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_17.jpg)
+![Link Layer 17](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_17.jpg)
 
-![Link Layer 18](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_18.jpg)
+![Link Layer 18](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_18.jpg)
 
 ## Real-Time Industry Applications
 
@@ -668,14 +668,14 @@ Settings for eth0:
         Link detected: yes
 ```
 
-![Link Layer 19](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_19.jpg)
+![Link Layer 19](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_19.jpg)
 
 
-![Link Layer 21](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_21.jpg)
+![Link Layer 21](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_21.jpg)
 
-![Link Layer 20](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_20.png)
+![Link Layer 20](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_20.png)
 
-![Link Layer 22](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_22.jpg)
+![Link Layer 22](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_22.jpg)
 
   * `The negotiation process`
 
@@ -695,23 +695,23 @@ Settings for eth0:
                                     1000baseT/Half 1000baseT/Full
       ```
 
-![Link Layer 23](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_23.jpg)
+![Link Layer 23](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_23.jpg)
 
-![Link Layer 24](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_24.jpg)
+![Link Layer 24](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_24.jpg)
 
 ---
 
 # Bridges and Switches
 
-![Link Layer 25](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_25.jpg)
+![Link Layer 25](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_25.jpg)
 
-![Link Layer 26](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_26.jpg)   
+![Link Layer 26](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_26.jpg)   
 
-![Link Layer 27](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_27.jpg)
+![Link Layer 27](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/link_layer_27.jpg)
 
-![Link Layer 28](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_28.jpg)
+![Link Layer 28](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_28.jpg)
 
-![Link Layer 29](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_29.jpg)
+![Link Layer 29](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_29.jpg)
 
 ---
 
