@@ -1,6 +1,6 @@
 # `Link Layer`
 
-![Link Layer 1](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/link_layer_1.jpg)
+![Link Layer 1](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_1.jpg)
 
 ```text
 
