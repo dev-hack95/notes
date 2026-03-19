@@ -13,7 +13,7 @@ ff        Flags   Scope       Group ID
 
 ### Flag Bits (4 bits)
 
-![Flag Bits](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/ipv6_multicast_4flag_bits.jpg)
+![Flag Bits](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/ipv6_multicast_4flag_bits.jpg)
 
 ---
 # Rendezvous Point (RP) - Detailed Explanation
@@ -190,9 +190,9 @@ ff       Flags   Scope    Reserved  Prefix     Prefix     Group ID
    - Uses format: `ff3x::/32` where x is any valid scope
    - Example: `ff32::/32` for link-local SSM block
 
-![UPBM1](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/ipv6_multicast_4flag_bits_1.jpg)
+![UPBM1](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/ipv6_multicast_4flag_bits_1.jpg)
 
-![UPBM2](https://github.com/dev-hack95/QuantPrep/blob/main/notes/networks/assets/ipv6_multicast_4flag_bits_2.jpg)
+![UPBM2](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/ipv6_multicast_4flag_bits_2.jpg)
 
 ### Working diagram
 
