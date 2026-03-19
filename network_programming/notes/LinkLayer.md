@@ -707,7 +707,7 @@ Settings for eth0:
 
 ![Link Layer 26](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_26.jpg)   
 
-![Link Layer 27](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/link_layer_27.jpg)
+![Link Layer 27](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_27.jpg)
 
 ![Link Layer 28](https://github.com/dev-hack95/notes/blob/main/network_programming/notes/assets/link_layer_28.jpg)
 
